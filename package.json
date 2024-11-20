@@ -1,0 +1,23 @@
+{
+  "name": "blog2.0",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "highlight.js": "^11.10.0",
+    "path": "^0.12.7",
+    "vue": "^3.5.12",
+    "vue-clipboard3": "^2.0.0",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "vite": "^5.4.10",
+    "vue-markdown-highlight": "^1.0.5"
+  }
+}
