@@ -11,11 +11,7 @@
       <div class="menu">
         <div class="menu-row" v-for="row in menuList" :key="row.id">
           <transition :name="`cell_${item.pos}`" v-for="item in row.detail" :key="item.id">
-            <div
-                :class="`menu-cell cell_${item.pos}`"
-                v-show="show && itemShow"
-                @click="handleCellClick(item.id)"
-            >
+            <div :class="`menu-cell cell_${item.pos}`" v-show="show && itemShow" @click="handleCellClick(item.id)">
               <div class="menu-cell-inside">
                 <div class="menu-cell--normal rect">
                   <svg-icon :iconClass="`icon-${item.icon}`" />
@@ -34,8 +30,8 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, onCreated } from 'vue';
-import OrderDialog from '@/components/OrderDialog';
+import { defineComponent, onBeforeMount, reactive, ref } from 'vue';
+import OrderDialog from '@/components/OrderDialog.vue';
 
 export default defineComponent({
   name: 'Menu',
@@ -134,15 +130,15 @@ export default defineComponent({
     const handleShare = () => {
       const cpText = window.location.href;
       this.$copyText(cpText)
-          .then(() => {
-            this.$toast.success('已复制，去分享给朋友吧');
-          })
-          .catch(() => {
-            this.$toast.error('复制失败');
-          });
+        .then(() => {
+          this.$toast.success('已复制，去分享给朋友吧');
+        })
+        .catch(() => {
+          this.$toast.error('复制失败');
+        });
     };
 
-    onCreated(() => {
+    onBeforeMount(() => {
       const regSub = /.*#\d+_sub;/;
       if (localStorage.info && regSub.test(localStorage.info)) {
         menuList[2].title = '已订阅';
@@ -176,6 +172,7 @@ export default defineComponent({
   font-size: 20px;
   color: #d5d5d5;
   z-index: 999;
+
   &-mask {
     position: fixed;
     left: 0;
@@ -184,9 +181,11 @@ export default defineComponent({
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 990;
+
     &-leave-active {
       animation: fadeOut 0.5s linear;
     }
+
     @keyframes fadeOut {
       100% {
         opacity: 0;
@@ -206,17 +205,21 @@ export default defineComponent({
     animation: roll ease 3s infinite;
     line-height: 0;
   }
+
   @keyframes roll {
     0% {
       transform: rotate(0);
     }
+
     50% {
       transform: rotate(180deg);
     }
+
     100% {
       transform: rotate(180deg);
     }
   }
+
   &-row {
     display: flex;
     width: 100%;
@@ -225,6 +228,7 @@ export default defineComponent({
     justify-content: space-between;
     align-items: center;
   }
+
   &-cell {
     width: calc(33.3% - 10px);
     height: 100%;
@@ -240,16 +244,20 @@ export default defineComponent({
       width: 100%;
       height: 100%;
       transition: all ease 0.5s;
+
       .svg-icon {
         font-size: 24px;
       }
+
       .rect {
         display: flex;
         flex-direction: column;
-        > div {
+
+        >div {
           margin-top: 8px;
           font-size: 14px;
         }
+
         height: 100%;
         margin: 0;
         font-size: 20px;
@@ -258,130 +266,164 @@ export default defineComponent({
         align-items: center;
         transition: all ease 0.5s;
       }
+
       &:hover {
         transform: translateY(-100%);
+
         p {
           background-color: rgba(255, 255, 255, 0.3);
         }
       }
     }
   }
+
   .cell {
+
     //enter
     &_lt-enter-active {
       animation: flyInfromLT linear 0.3s;
     }
+
     &_mt-enter-active {
       animation: flyInfromMT linear 0.3s;
     }
+
     &_rt-enter-active {
       animation: flyInfromRT linear 0.3s;
     }
+
     &_lc-enter-active {
       animation: flyInfromLC linear 0.3s;
     }
+
     &_mc-enter-active {
       animation: flyInfromMC linear 0.3s;
     }
+
     &_rc-enter-active {
       animation: flyInfromRC linear 0.3s;
     }
+
     &_lb-enter-active {
       animation: flyInfromLB linear 0.3s;
     }
+
     &_mb-enter-active {
       animation: flyInfromMB linear 0.3s;
     }
+
     &_rb-enter-active {
       animation: flyInfromRB linear 0.3s;
     }
+
     //leave
     &_lt-leave-active {
       animation: flyInfromLT linear 0.3s alternate-reverse;
     }
+
     &_mt-leave-active {
       animation: flyInfromMT linear 0.3s alternate-reverse;
     }
+
     &_rt-leave-active {
       animation: flyInfromRT linear 0.3s alternate-reverse;
     }
+
     &_lc-leave-active {
       animation: flyInfromLC linear 0.3s alternate-reverse;
     }
+
     &_mc-leave-active {
       animation: flyInfromMC linear 0.3s alternate-reverse;
     }
+
     &_rc-leave-active {
       animation: flyInfromRC linear 0.3s alternate-reverse;
     }
+
     &_lb-leave-active {
       animation: flyInfromLB linear 0.3s alternate-reverse;
     }
+
     &_mb-leave-active {
       animation: flyInfromMB linear 0.3s alternate-reverse;
     }
+
     &_rb-leave-active {
       animation: flyInfromRB linear 0.3s alternate-reverse;
     }
   }
+
   // top
   @keyframes flyInfromLT {
     0% {
       transform: translate3D(-100%, -100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   @keyframes flyInfromMT {
     0% {
       transform: translate3D(0, -100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   @keyframes flyInfromRT {
     0% {
       transform: translate3D(100%, -100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   // middle
   @keyframes flyInfromLC {
     0% {
       transform: translate3D(-100%, 0, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   @keyframes flyInfromMC {
     0% {
       opacity: 0;
     }
+
     50% {
       opacity: 0.3;
     }
+
     100% {
       opacity: 1;
     }
   }
+
   @keyframes flyInfromRC {
     0% {
       transform: translate3D(100%, 0, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
@@ -394,26 +436,31 @@ export default defineComponent({
       transform: translate3D(-100%, 100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   @keyframes flyInfromMB {
     0% {
       transform: translate3D(0, 100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;
     }
   }
+
   @keyframes flyInfromRB {
     0% {
       transform: translate3D(100%, 100%, 0);
       opacity: 0.2;
     }
+
     100% {
       transform: translate3D(0);
       opacity: 1;

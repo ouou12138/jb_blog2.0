@@ -1,40 +1,42 @@
 <template>
   <div id="app">
-    <transition name="router">
-      <router-view class="router"/>
-    </transition>
-    <l-menu v-if="!isMobileView"/>
-    <Nav v-if="!isMobileView"/>
-    <back-to-top v-if="!isMobileView"/>
-    <music-player v-if="!isMobileView"/>
+    <router-view v-slot="{ Component }">
+      <transition name="router">
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
+    <l-menu v-if="!isMobileView" />
+    <Nav v-if="!isMobileView" />
+    <back-to-top v-if="!isMobileView" />
+    <music-player v-if="!isMobileView" />
     <div class="app-bg"></div>
   </div>
 </template>
 
 <script>
-import LMenu from '@/components/Menu'
-import BackToTop from '@/components/BackToTop'
-import Nav from '@/components/Nav'
-import MusicPlayer from '@/components/MusicPlayer'
+import LMenu from '@/components/Menu.vue'
+import BackToTop from '@/components/BackToTop.vue'
+import Nav from '@/components/Nav.vue'
+import MusicPlayer from '@/components/MusicPlayer.vue'
 import router from './router'
 
 export default {
   components: { LMenu, Nav, BackToTop, MusicPlayer },
-  data () {
+  data() {
     return {
       isMobileView: true // 默认不显示
     }
   },
-  created () {
+  created() {
     if (this.isMobile()) {
       router.push('/resume')
     }
   },
-  mounted () {
+  mounted() {
     this.isMobileView = this.isMobile()
   },
   methods: {
-    isMobile () {
+    isMobile() {
       const flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
       return flag
     }
@@ -42,7 +44,8 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "@/assets/css/index.scss";
+@use "@/assets/css/index.scss";
+
 html,
 body {
   font-size: 14px;
@@ -51,9 +54,10 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: Lato, "Microsoft Jhenghei", "Hiragino Sans GB", "Microsoft YaHei",
-  sans-serif;
+    sans-serif;
   background-color: #fff;
 }
+
 #app {
   position: relative;
   width: 100%;
@@ -61,6 +65,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .app-bg {
   position: absolute;
   top: 0;
@@ -73,7 +78,8 @@ body {
   background-size: contain;
   animation: blurOut 3s linear forwards;
 }
-.router{
+
+.router {
   position: relative;
   z-index: 2;
 }
@@ -82,30 +88,37 @@ body {
   0% {
     filter: blur(0);
   }
+
   40% {
     filter: blur(1px);
   }
+
   100% {
     filter: blur(8px);
   }
 }
+
 .router {
   &-enter-active {
     animation: routerIn ease .5s;
   }
+
   &-leave-active {
     position: absolute;
     opacity: 0;
   }
+
   &-move {
     transition: all ease .5s;
   }
 }
+
 @keyframes routerIn {
   0% {
     opacity: 0;
     transform: scale(0.1);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);

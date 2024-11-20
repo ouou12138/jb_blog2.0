@@ -13,21 +13,12 @@
             </button>
           </div>
         </transition>
-        <textarea
-            placeholder="写下你的评论..."
-            type="text"
-            ref="commentInput"
-            v-model="comment"
-        ></textarea>
+        <textarea placeholder="写下你的评论..." type="text" ref="commentInput" v-model="comment"></textarea>
       </div>
       <button class="comment-submit" @click="onSubmit">提 交</button>
     </div>
     <ul v-if="commentList.length > 0">
-      <li
-          class="comment-item"
-          v-for="(item, index) in commentList"
-          :key="item.id"
-      >
+      <li class="comment-item" v-for="(item, index) in commentList" :key="item.id">
         <span class="comment-item-idx">
           {{ total - index - (pageIndex - 1) * pageSize }}楼
         </span>
@@ -61,19 +52,14 @@
       </li>
     </ul>
     <OrderDialog openType="reg" :isShow.sync="showDialog" />
-    <pagination
-        :pageIndex="pageIndex"
-        :pageSize="pageSize"
-        :total="total"
-        @change="handlePageChange"
-    />
+    <pagination :pageIndex="pageIndex" :pageSize="pageSize" :total="total" @change="handlePageChange" />
   </div>
 </template>
 
 <script>
 import { ref, reactive, onMounted } from "vue";
-import OrderDialog from "@/components/OrderDialog";
-import Pagination from "./Pagination";
+import OrderDialog from "@/components/OrderDialog.vue";
+import Pagination from "./Pagination.vue";
 import dayjs from "dayjs";
 
 export default {
@@ -92,9 +78,9 @@ export default {
     const isReplying = ref(false);
     const showDialog = ref(false);
     const lastCommentTimeStamp = ref(
-        localStorage.lastCommentTimeStamp === undefined
-            ? 0
-            : Number(localStorage.lastCommentTimeStamp)
+      localStorage.lastCommentTimeStamp === undefined
+        ? 0
+        : Number(localStorage.lastCommentTimeStamp)
     );
 
     // 格式化时间
@@ -213,9 +199,11 @@ export default {
 <style scoped lang="scss">
 .comment {
   font-size: 14px;
+
   &-title {
     text-align: center;
     margin: 20px 0;
+
     b {
       font-size: 28px;
       color: brown;
@@ -225,6 +213,7 @@ export default {
   &-action {
     display: flex;
     align-items: flex-end;
+
     &__left {
       position: relative;
       width: 100%;
@@ -233,6 +222,7 @@ export default {
       flex-direction: column;
       align-items: flex-start;
       margin-top: 20px;
+
       textarea {
         width: 100%;
         height: 36px;
@@ -246,6 +236,7 @@ export default {
         background-color: #f2f2f2;
         color: #666;
       }
+
       textarea:focus {
         letter-spacing: 1px;
         height: 60px;
@@ -266,15 +257,18 @@ export default {
     border-radius: 4px 4px 0 0;
     padding: 4px 8px 0;
     z-index: 11;
+
     &-enter-active,
     &-leave-active {
       transition: all ease 0.5s;
     }
+
     &-enter,
     &-leave-to {
       opacity: 0;
       transform: translateX(-10px);
     }
+
     button {
       color: red;
       padding: 2px 3px;
@@ -282,11 +276,13 @@ export default {
       background-color: transparent;
       cursor: pointer;
       transition: all ease 0.3s;
+
       &:hover {
         transform: rotate(180deg);
       }
     }
   }
+
   &-submit {
     color: #fff;
     font-size: 15px;
@@ -296,16 +292,20 @@ export default {
     border-radius: 60px;
     cursor: pointer;
     transition: all ease 0.3s;
+
     &:hover {
       background-color: rgb(143, 36, 36);
     }
+
     &:active {
       background-color: rgb(126, 33, 33);
     }
   }
+
   &-ul {
     margin-top: 60px;
   }
+
   &-item {
     position: relative;
     padding: 10px;
@@ -313,6 +313,7 @@ export default {
     overflow: hidden;
     display: flex;
     border-bottom: 1px dashed #c9c9c9;
+
     &-idx {
       position: absolute;
       right: 10px;
@@ -321,6 +322,7 @@ export default {
       font-style: italic;
       font-size: 14px;
     }
+
     &-avator {
       width: 40px;
       height: 40px;
@@ -333,6 +335,7 @@ export default {
       border: 1px solid #e5e5e5;
       color: #b13713;
     }
+
     &-content {
       flex: 1;
       display: flex;
@@ -340,16 +343,19 @@ export default {
       color: #999;
       font-size: 14px;
     }
+
     &-info {
       display: flex;
       flex-direction: column;
     }
+
     &-name {
       display: flex;
       align-items: center;
       font-size: 15px;
       color: #333;
     }
+
     &-tag {
       user-select: none;
       display: inline-block;
@@ -358,45 +364,57 @@ export default {
       border-radius: 3px;
       margin-left: 5px;
     }
+
     &-time {
       font-size: 12px;
     }
+
     &-detail {
       font-size: 14px;
       color: #000;
       margin-top: 10px;
     }
+
     &-control {
       margin: 15px 0;
       font-size: 14px;
+
       button {
         padding: 0;
         display: inline-flex;
         align-items: center;
+
         .svg-icon {
           margin-right: 5px;
           transition: all ease 0.5s;
         }
+
         background-color: transparent;
+
         span {
           transition: all ease 0.5s;
         }
+
         color: #999;
         cursor: pointer;
+
         &:hover {
           color: #333;
         }
       }
     }
+
     &-replyto {
       background-color: #e5e5e5;
       color: #17aaee;
       padding: 10px;
       font-size: 13px;
+
       span {
         color: #666;
       }
     }
+
     &-replytext {
       display: inline-block;
       margin-top: 1em;

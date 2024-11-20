@@ -7,61 +7,55 @@
             <h1 class="article-title">{{ articleInfo.title }}</h1>
             <ul class="article-meta">
               <li class="article-meta-li">
-                <svg-icon iconClass="icon-clock"/>
+                <svg-icon iconClass="icon-clock" />
                 发表时间: {{ format(articleInfo.createdAt) }}
               </li>
               <li class="article-meta-li">
-                <svg-icon iconClass="icon-update"/>
+                <svg-icon iconClass="icon-update" />
                 更新时间: {{ format(articleInfo.updatedAt) }}
               </li>
               <li class="article-meta-li">
-                <svg-icon iconClass="icon-eye"/>
+                <svg-icon iconClass="icon-eye" />
                 阅读数({{ articleInfo.readCount }})
               </li>
             </ul>
           </header>
           <div class="article-content" v-highlight v-if="articleInfo.content">
-            <markdown :source="articleInfo.content"/>
+            <markdown :source="articleInfo.content" />
           </div>
           <div class="article-suspended">
-            <div
-                :class="`suspended-item ${alreadyLike ? 'suspended-item--act' : ''}`"
-                :badge="articleInfo.likeCount"
-                @click="likeArticle"
-            >
-              <svg-icon iconClass="icon-like"/>
+            <div :class="`suspended-item ${alreadyLike ? 'suspended-item--act' : ''}`" :badge="articleInfo.likeCount"
+              @click="likeArticle">
+              <svg-icon iconClass="icon-like" />
             </div>
-            <div
-                class="suspended-item"
-                :badge="commentCount"
-                @click="handleJumpToComment"
-            >
-              <svg-icon iconClass="icon-comment"/>
+            <div class="suspended-item" :badge="commentCount" @click="handleJumpToComment">
+              <svg-icon iconClass="icon-comment" />
             </div>
           </div>
         </div>
       </transition>
       <div class="article-comment" v-if="showComment">
-        <comment :count.sync="commentCount"/>
+        <comment :count.sync="commentCount" />
       </div>
     </div>
     <div class="article-right">
       <transition name="article-menu">
-        <article-menu class="article-menu" :menuKey="menuKey"/>
+        <article-menu class="article-menu" :menuKey="menuKey" />
       </transition>
     </div>
-    <order-dialog/>
+    <order-dialog />
   </div>
 </template>
 
 <script>
-import {ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import dayjs from 'dayjs';
 import VueScrollTo from 'vue-scrollto';
-import ArticleMenu from '@/components/ArticleMenu';
-import Markdown from '@/components/Markdown';
-import Comment from '@/components/Comment';
-import OrderDialog from '@/components/OrderDialog';
+import ArticleMenu from '@/components/ArticleMenu.vue';
+import Markdown from '@/components/Markdown.vue';
+import Comment from '@/components/Comment.vue';
+import OrderDialog from '@/components/OrderDialog.vue';
+import Loading from "@/assets/js/loading.js"
 
 export default {
   name: 'Article',
@@ -77,14 +71,14 @@ export default {
     const alreadyLike = ref(false);
     const showComment = ref(false);
     const commentCount = ref(0);
-    const articleInfo = ref({content: ''});
+    const articleInfo = ref({ content: '' });
 
     // 格式化时间
     const format = (timestamp) => dayjs(timestamp * 1000).format('YYYY-MM-DD');
 
     // 初始化数据加载
     const initLoadData = () => {
-      $loading.show();
+      Loading.show();
       setTimeout(() => {
         getArticleById();
       }, 1000);
@@ -105,9 +99,9 @@ export default {
     const getArticleById = async () => {
       try {
         const data = await $api.getArticleById({
-          params: {id: $route.params.id},
+          params: { id: $route.params.id },
         });
-        $loading.hideBefore(() => {
+        Loading.hideBefore(() => {
           articleInfo.value = data;
         });
         setTimeout(() => {
@@ -125,13 +119,13 @@ export default {
 
       try {
         await $api.likeArticle({
-          params: {id: $route.params.id},
+          params: { id: $route.params.id },
         });
         alreadyLike.value = true;
         localStorage.info =
-            localStorage.info === undefined
-                ? `#${$route.params.id}_like;`
-                : localStorage.info + `#${$route.params.id}_like;`;
+          localStorage.info === undefined
+            ? `#${$route.params.id}_like;`
+            : localStorage.info + `#${$route.params.id}_like;`;
         articleInfo.value.likeCount += 1;
       } catch (error) {
         $toast.error('点赞失败，请稍后重试');
@@ -142,7 +136,7 @@ export default {
     const readArticle = async () => {
       try {
         await $api.readArticle({
-          params: {id: $route.params.id},
+          params: { id: $route.params.id },
         });
       } catch (error) {
         console.error('记录阅读失败', error);
@@ -153,8 +147,8 @@ export default {
     onMounted(() => {
       initLoadData();
       if (
-          localStorage.info &&
-          localStorage.info.includes(`#${$route.params.id}_like`)
+        localStorage.info &&
+        localStorage.info.includes(`#${$route.params.id}_like`)
       ) {
         alreadyLike.value = true;
       }
@@ -274,6 +268,7 @@ export default {
       opacity: 0;
       transform: translateY(-20px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);

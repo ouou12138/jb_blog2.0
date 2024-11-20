@@ -17,18 +17,9 @@
         </div>
         <div class="form-tip">TIP:此订阅仅会向您推送博文，博主用生命担保不会把你的信息卖个其他网站来牟取利益，请您放心</div>
         <div>
-          <button
-              class="form-btn form-submit"
-              type="button"
-              @click="onSubmit(true)"
-              v-if="openType === 'subscribe'"
-          >订 &nbsp; 阅</button>
-          <button
-              class="form-btn form-submit"
-              type="button"
-              @click="onSubmit(false)"
-              v-else
-          >确 &nbsp; 定</button>
+          <button class="form-btn form-submit" type="button" @click="onSubmit(true)" v-if="openType === 'subscribe'">订
+            &nbsp; 阅</button>
+          <button class="form-btn form-submit" type="button" @click="onSubmit(false)" v-else>确 &nbsp; 定</button>
           <button class="form-btn form-close" type="button" @click="handleClose">关 &nbsp; 闭</button>
         </div>
       </form>
@@ -43,23 +34,23 @@ export default {
   name: 'OrderDialog',
   setup(props, { emit }) {
     // 定义 props
-    const { openType, isShow } = defineProps({
-      openType: {
-        type: String,
-        default: 'subscribe'
-      },
-      isShow: {
-        type: Boolean,
-        default: false
-      }
-    });
+    // const props = defineProps({
+    //   openType: {
+    //     type: String,
+    //     default: 'subscribe'
+    //   },
+    //   isShow: {
+    //     type: Boolean,
+    //     default: false
+    //   }
+    // });
 
     // 定义响应式数据
     const name = ref('');
     const email = ref('');
 
     // 监听 isShow 的变化
-    watch(isShow, (nv) => {
+    watch(() => props.isShow, (nv) => {
       if (nv) {
         setTimeout(() => {
           document.getElementById('name').focus()
@@ -91,18 +82,18 @@ export default {
         if (data) {
           if (isSubscribed) {
             localStorage.info = localStorage.info === undefined
-                ? `#${data.id}_sub;#${data.id}_user;`
-                : localStorage.info + `#${data.id}_sub;#${data.id}_user;`;
+              ? `#${data.id}_sub;#${data.id}_user;`
+              : localStorage.info + `#${data.id}_sub;#${data.id}_user;`;
           } else {
             localStorage.info = localStorage.info === undefined
-                ? `#${data.id}_user;`
-                : localStorage.info + `#${data.id}_user;`;
+              ? `#${data.id}_user;`
+              : localStorage.info + `#${data.id}_user;`;
           }
         } else {
           this.$toast.error('订阅失败');
         }
 
-        if (openType === 'subscribe') {
+        if (props.openType === 'subscribe') {
           this.$toast.success('订阅成功！');
         } else {
           this.$toast.success('注册成功！');
@@ -125,8 +116,8 @@ export default {
       onSubmit,
       insertGuest,
       handleClose,
-      openType,
-      isShow
+      openType: props.openType,
+      isShow: props.isShow
     };
   }
 };
@@ -144,10 +135,12 @@ export default {
   box-shadow: 0 0 10px 0 #252525;
   z-index: 50;
   color: #fff;
+
   &-title {
     font-size: 18px;
     margin-bottom: 40px;
   }
+
   input {
     font-size: 13px;
     width: 100%;
@@ -161,30 +154,38 @@ export default {
   &-enter-active {
     animation: zoomDialog linear 0.5s;
   }
+
   &-leave,
   &-leave-active {
     animation: zoomDialog linear 0.5s alternate-reverse;
   }
 }
+
 .form {
   &-item {
     color: #999;
     transition: color ease 0.5s;
+
     &:focus-within {
       color: #fff;
     }
+
     margin-bottom: 20px;
   }
+
   &-key {
     display: inline-block;
     margin-bottom: 10px;
   }
+
   &-value {
     position: relative;
     overflow: hidden;
+
     &:focus-within::after {
       transform: translateX(0);
     }
+
     &::after {
       content: "";
       position: absolute;
@@ -197,10 +198,12 @@ export default {
       transition: all ease 0.8s;
     }
   }
+
   &-tip {
     font-size: 12px;
     color: #999;
   }
+
   &-btn {
     width: 70px;
     height: 34px;
@@ -208,15 +211,18 @@ export default {
     cursor: pointer;
     transition: all ease 0.5s;
   }
+
   &-close {
     border: 1px solid #666;
     color: #999;
     background-color: transparent;
+
     &:hover {
       color: #c9c9c9;
       border: 1px solid #999;
     }
   }
+
   &-submit {
     position: relative;
     z-index: 1;
@@ -225,13 +231,16 @@ export default {
     border: 1px solid rgb(33, 157, 240);
     background-color: transparent;
     overflow: hidden;
+
     &:hover {
       color: #fff;
+
       &::after {
         opacity: 1;
         transform: rotate(22.5deg) scale(1, 30);
       }
     }
+
     &::after {
       content: "";
       display: block;
@@ -247,19 +256,23 @@ export default {
       z-index: -1;
     }
   }
+
   @keyframes zoomDialog {
     0% {
       opacity: 0;
       transform: scale(0);
     }
+
     75% {
       opacity: 0.9;
       transform: scale(1.1);
     }
+
     90% {
       opacity: 1;
       transform: scale(0.95);
     }
+
     100% {
       opacity: 1;
       transform: scale(1);

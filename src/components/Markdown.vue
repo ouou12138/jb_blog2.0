@@ -1,10 +1,5 @@
 <template>
-  <VueMarkdown
-      :toc="true"
-      :source="source"
-      toc-anchor-link-class="md-anchor"
-      class="markdown-body"
-  />
+  <VueMarkdown :toc="true" :source="source" toc-anchor-link-class="md-anchor" class="markdown-body" />
 </template>
 
 <script>
@@ -26,7 +21,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/assets/css/markdown.scss";
+@use "@/assets/css/markdown.scss";
 
 .md-anchor {
   color: #999;
